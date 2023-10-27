@@ -3,7 +3,7 @@
 #include "soc.h"
 #include "bootrom_usb_helper.h"
 
-#if defined(T30)
+#if defined(T20) | defined(T30)
     #define write_ep1_in_sync (0xFFF05092 + 1)
     #define usb_reset_ep1 (0xFFF04996 + 1)
 #elif defined(T114)

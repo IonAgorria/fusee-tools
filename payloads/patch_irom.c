@@ -2,7 +2,7 @@
 #include "common.h"
 
 
-#if defined(T30)
+#if defined(T20) | defined(T30)
     #define BOOTROM_START_POST_IPATCH	0xfff01004
     #define IROM_PATCH_ADDRESS			0xfff01CD4
 #elif defined(T114)

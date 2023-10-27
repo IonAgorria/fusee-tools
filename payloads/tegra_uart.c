@@ -39,7 +39,11 @@ void uart_init() {
 	if(reg_read(PMC_BASE, APBDEV_PMC_SCRATCH42_0) != MAGIC_VALUE) {
 
 #ifdef UART_BASE
-#if defined(T30) && defined(UART_A_USE)
+#if defined(T20) && defined(UART_B_USE)
+		/* T20 cannot configure individual pins, only groups */
+		reg_set(PINMUX_BASE, APB_MISC_PP_TRISTATE_REG_B_0, UAD_TRISTATE_ON);
+		reg_clear(PINMUX_BASE, APB_MISC_PP_PIN_MUX_CTL_A_0, UAD_SEL_MASK);
+#elif defined(T30) && defined(UART_A_USE)
 		reg_write(PINMUX_BASE, PINMUX_AUX_ULPI_DATA0_0, 0b00000110); /* tx */
 		reg_write(PINMUX_BASE, PINMUX_AUX_ULPI_DATA1_0, 0b00100110); /* rx */
 #elif defined(T114) && defined(UART_A_USE)

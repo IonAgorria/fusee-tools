@@ -12,6 +12,12 @@
 
 #define PINMUX_BASE					(0x70003000)
 
+#define APB_MISC_PP_TRISTATE_REG_B_0			(0x18)	/* T20 uart-b UAD TRISTATE */
+#define UAD_TRISTATE_ON					(1 << 21)
+
+#define APB_MISC_PP_PIN_MUX_CTL_A_0			(0x80)	/* T20 uart-b UAD GROUP MUX */
+#define UAD_SEL_MASK					(0b11 << 6)
+
 #define PINMUX_AUX_ULPI_DATA0_0				(0x00)	/* T30 uart-a tx */
 #define PINMUX_AUX_ULPI_DATA1_0				(0x04)	/* T30 uart-a rx */
 

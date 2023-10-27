@@ -27,7 +27,7 @@ LDFLAGS ?= -nostdlib -L$(GCC_LIB) -lgcc
 
 OBJS = tegra_uart.o printf.o bootrom_usb_helper.o
 
-all: T30 T114
+all: T20 T30 T114
 
 T20:
 	$(MAKE) \
