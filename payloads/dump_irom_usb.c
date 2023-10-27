@@ -3,16 +3,7 @@
 #include "tegra_uart.h"
 #include "common.h"
 #include "bootrom_usb_helper.h"
-
-#define BOOTROM_START			0xfff00000
-
-#if defined(T30)
-    #define IROM_SIZE (48 * 1024)
-#elif defined(T114)
-    #define IROM_SIZE (64 * 1024)
-#else
-    #error No SoC specified
-#endif
+#include "soc.h"
 
 #define IPATCH_BASE					(0x6001dc00)
 #define IPATCH_SELECT				(0x0)

@@ -8,6 +8,8 @@
 #elif defined(T114)
     #define BOOTROM_START_POST_IPATCH	0xfff01008
     #define IROM_PATCH_ADDRESS			0xfff022ac
+#else
+    #error No SoC specified
 #endif
 
 // Common

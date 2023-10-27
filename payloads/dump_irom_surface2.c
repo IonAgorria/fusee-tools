@@ -7,7 +7,6 @@
 /* uart-a rx */
 #define PINMUX_AUX_SDMMC3_CMD_0			(0x394)
 
-#define BOOTROM_START			0xfff00000
 #define BOOTROM_SIZE_T114		0x10000
 
 void send_zero();
