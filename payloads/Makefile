@@ -27,7 +27,9 @@ LDFLAGS ?= -nostdlib -L$(GCC_LIB) -lgcc
 
 OBJS = tegra_uart.o printf.o bootrom_usb_helper.o
 
-all: T20 T30 T114
+all: common T20 T30 T114
+
+common: common_pmc_reset.bin
 
 T20:
 	$(MAKE) \
@@ -89,6 +91,15 @@ payloads: clean_objs		\
 
 %.o: %.c
 	$(CC) $(CFLAGS) -D$(SOC) -DUART_$(UART)_USE $< -c -o $@
+
+common_%.bin: common_%.elf
+	$(OBJCOPY) -v -O binary $< $@
+
+common_%.elf: common_%.o
+	$(LD) $^ -T common.lds --defsym LOAD_ADDR=0x40000000 $(LDFLAGS) -o $@
+
+common_%.o: %.c
+	$(CC) $(CFLAGS) $< -c -o $@
 
 clean: clean_objs
 	rm -f *.bin
