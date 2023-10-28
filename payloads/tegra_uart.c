@@ -46,9 +46,15 @@ void uart_init() {
 #elif defined(T30) && defined(UART_A_USE)
 		reg_write(PINMUX_BASE, PINMUX_AUX_ULPI_DATA0_0, 0b00000110); /* tx */
 		reg_write(PINMUX_BASE, PINMUX_AUX_ULPI_DATA1_0, 0b00100110); /* rx */
+#elif defined(T30) && defined(UART_D_USE)
+		reg_write(PINMUX_BASE, PINMUX_AUX_ULPI_CLK_0, 0b00000110); /* tx */
+		reg_write(PINMUX_BASE, PINMUX_AUX_ULPI_DIR_0, 0b00100110); /* rx */
 #elif defined(T114) && defined(UART_A_USE)
 		reg_write(PINMUX_BASE, PINMUX_AUX_SDMMC3_DAT1_0, 0); /* tx */
 		reg_write(PINMUX_BASE, PINMUX_AUX_SDMMC3_CMD_0, 0); /* rx */
+#elif defined(T114) && defined(UART_D_USE)
+		reg_write(PINMUX_BASE, PINMUX_AUX_GMI_A16_0, 0); /* tx */
+		reg_write(PINMUX_BASE, PINMUX_AUX_GMI_A17_0, 0); /* rx */
 #else
     #error No UART specified
 #endif
