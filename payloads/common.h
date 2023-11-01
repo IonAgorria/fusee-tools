@@ -6,6 +6,10 @@
 #define reg_set(base, off, value) _REG(base, off) |= value
 #define reg_read(base, off) _REG(base, off)
 
+#define PMC_BASE					(0x7000e400)
+#define APBDEV_PMC_SCRATCH41_0			(0x140)
+#define APBDEV_PMC_SCRATCH42_0			(0x144)
+
 #define BOOTROM_START			0xfff00000
 
 /*

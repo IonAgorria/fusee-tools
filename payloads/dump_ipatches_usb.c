@@ -1,9 +1,9 @@
 #include <stdint.h>
-#include "printf.h"
-#include "tegra_uart.h"
 #include "common.h"
+#include "strings.h"
 #include "soc.h"
 #include "bootrom_usb_helper.h"
+
 
 /* ipatch hardware */
 #define IPATCH_BASE					(0x6001dc00)

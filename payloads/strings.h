@@ -1,3 +1,6 @@
+#ifndef STRINGS_H
+#define STRINGS_H
+
 /* Copyright (c) 1986, 1988, 1991, 1993
  *	The Regents of the University of California.  All rights reserved.
  * (c) UNIX System Laboratories, Inc.
@@ -33,14 +36,29 @@
  *	@(#)subr_prf.c	8.3 (Berkeley) 1/21/94
  */
 
-#include "tegra_uart.h"
-#include "printf.h"
+typedef unsigned long size_t;
 
-extern void lock_mutex(void* mutex);
-extern void unlock_mutex(void* mutex);
 
-#define putchar putc
-//void putc(int c, void *stream);
+typedef long ssize_t;
+/*
+#ifdef __64BIT__
+typedef unsigned long long uintmax_t;
+typedef long long intmax_t;
+#else
+typedef unsigned int uintmax_t;
+typedef int intmax_t;
+#endif
+*/
+
+typedef unsigned char u_char;
+
+typedef unsigned int u_int;
+typedef unsigned long u_long;
+typedef unsigned short u_short;
+typedef unsigned long long u_quad_t;
+typedef long long quad_t;
+//typedef unsigned long uintptr_t;
+typedef long ptrdiff_t;
 
 
 #define NULL ((void*)0)
@@ -424,26 +442,6 @@ number:
 #undef PCHAR
 }
 
-#define _REG(base, off) 				*(volatile unsigned int *)((base) + (off))
-#define reg_write(base, off, value) 			_REG(base, off) = value
-#define reg_clear(base, off, value) 			_REG(base, off) &= ~value
-#define reg_set(base, off, value) 			_REG(base, off) |= value
-#define reg_read(base, off) 				_REG(base, off)
-
-#define PMC_BASE					(0x7000e400)
-#define APBDEV_PMC_SCRATCH41_0			(0x140)
-
-void
-printf(const char *fmt, ...)
-{
-	va_list ap;
-	
-	uart_init();
-
-	va_start(ap, fmt);
-	kvprintf(fmt, putchar, (void*)1, 10, ap);
-	va_end(ap);
-}
 
 /* Thanks to James Cone (https://github.com/JamesC1) for this */
 void
@@ -455,3 +453,5 @@ sprintf(char *buffer, const char *fmt, ...)
 	kvprintf(fmt, NULL, (void *)buffer, 10, ap);
 	va_end(ap);
 }
+
+#endif //STRINGS_H

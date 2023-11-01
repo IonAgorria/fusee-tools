@@ -1,6 +1,4 @@
 #include <stdint.h>
-#include "printf.h"
-#include "tegra_uart.h"
 #include "common.h"
 #include "bootrom_usb_helper.h"
 #include "soc.h"

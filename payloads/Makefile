@@ -25,11 +25,7 @@ GCC_LIB := "/usr/lib/gcc/$(CROSS_COMPILE:-=)/$(shell $(CC) -dumpversion)"
 LDFLAGS ?= -nostdlib -L$(GCC_LIB) -lgcc
 #-Map=$(basename $@).map
 
-OBJS = tegra_uart.o printf.o bootrom_usb_helper.o
-
-all: common T20 T30 T114
-
-common: common_pmc_reset.bin
+all: T20 T30 T114
 
 T20:
 	$(MAKE) \
@@ -76,35 +72,43 @@ T114_D:
 #		ENTRY_ADDR=0x4000E000 \
 #		payloads
 
-payloads: clean_objs		\
-	  dump_fuse_usb.bin	\
-	  dump_ipatches_usb.bin	\
-	  dump_irom_usb.bin	\
-	  patch_irom.bin	\
-	  dump_irom_uart.bin
+payloads: clean_objs \
+	make_folder \
+	pmc_reset.bin \
+	patch_irom.bin \
+	dump_fuse_usb.bin \
+	dump_ipatches_usb.bin \
+	dump_irom_usb.bin \
+	dump_irom_uart.bin
+
+make_folder:
+	mkdir -p out/elf/ out/$(SOC)
+
+%_uart.bin: %_uart.elf
+	$(OBJCOPY) -v -O binary out/elf/$(SOC)_$(UART)_$< out/$(SOC)/$(@:.bin=_$(UART).bin)
+	rm out/elf/$(SOC)_$(UART)_$<
 
 %.bin: %.elf
-	$(OBJCOPY) -v -O binary $(SOC)_$(UART)_$< $(SOC)_$(UART)_$@
+	$(OBJCOPY) -v -O binary out/elf/$(SOC)_$< out/$(SOC)/$@
+	rm out/elf/$(SOC)_$<
+	
+%.elf: %.o
+	$(LD) $^ -T common.lds --defsym LOAD_ADDR=$(ENTRY_ADDR) $(LDFLAGS) -o out/elf/$(SOC)_$@
 
-%.elf: %.o $(OBJS)
-	$(LD) $^ -T common.lds --defsym LOAD_ADDR=$(ENTRY_ADDR) $(LDFLAGS) -o $(SOC)_$(UART)_$@
+%_uart.elf: %_uart.o
+	$(LD) $^ -T common.lds --defsym LOAD_ADDR=$(ENTRY_ADDR) $(LDFLAGS) -o out/elf/$(SOC)_$(UART)_$@
 
 %.o: %.c
+	$(CC) $(CFLAGS) -D$(SOC) $< -c -o $@
+
+%_uart.o: %_uart.c
 	$(CC) $(CFLAGS) -D$(SOC) -DUART_$(UART)_USE $< -c -o $@
 
-common_%.bin: common_%.elf
-	$(OBJCOPY) -v -O binary $< $@
-
-common_%.elf: common_%.o
-	$(LD) $^ -T common.lds --defsym LOAD_ADDR=0x40000000 $(LDFLAGS) -o $@
-
-common_%.o: %.c
-	$(CC) $(CFLAGS) $< -c -o $@
 
 clean: clean_objs
-	rm -f *.bin
+	rm -f out/*/*.bin
 
 clean_objs:
-	rm -f *.o *.elf *.map
+	rm -f *.o *.map out/elf/*.elf
 
 .PHONY: all clean
