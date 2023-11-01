@@ -91,7 +91,7 @@ make_folder:
 %.bin: %.elf
 	$(OBJCOPY) -v -O binary out/elf/$(SOC)_$< out/$(SOC)/$@
 	rm out/elf/$(SOC)_$<
-	
+
 %.elf: %.o
 	$(LD) $^ -T common.lds --defsym LOAD_ADDR=$(ENTRY_ADDR) $(LDFLAGS) -o out/elf/$(SOC)_$@
 

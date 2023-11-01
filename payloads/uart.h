@@ -1,5 +1,5 @@
-#ifndef TEGRA_UART_H
-#define TEGRA_UART_H
+#ifndef UART_H
+#define UART_H
 
 #define HEX_CHAR(x) ((((x) + '0') > '9') ? ((x) + '7') : ((x) + '0'))
 
@@ -150,18 +150,11 @@ void uart_init() {
 	}
 }
 
-void putc(int c, void *stream) {
-	// use this to keep track of if uart has been initialized
-	//uart_init();
 
-#ifdef UART_BASE
-	// put the char into the tx fifo
-	reg_write(UART_BASE, UART_THR_DLAB, c);
-
-	// wait for tx fifo to clear
+// put the char into the tx fifo and wait for tx fifo to clear 
+#define UART_PUTC(c) \
+	reg_write(UART_BASE, UART_THR_DLAB, (c)); \
 	while(!((reg_read(UART_BASE, UART_LSR) >> 5) & 0x01));
-#endif
-}
 
 void uart_print(const char *string) {
 	// use this to keep track of if uart has been initialized
@@ -169,42 +162,11 @@ void uart_print(const char *string) {
 	
 	// send all characters until NULL to uart-N
 	while(*string) {
-#ifdef UART_BASE
-		// put the char into the tx fifo
-		reg_write(UART_BASE, UART_THR_DLAB, (char) *string);
-
-		// wait for tx fifo to clear
-		while(!((reg_read(UART_BASE, UART_LSR) >> 5) & 0x01));
-#endif
+		UART_PUTC(*string);
 
 		// move on to next char
 		++string;
     }
 }
 
-void printf(const char *fmt, ...) {
-	va_list ap;
-
-	va_start(ap, fmt);
-	kvprintf(fmt, putc, (void*)1, 10, ap);
-	va_end(ap);
-}
-
-void dump_memory(uint8_t *src, uint32_t size) {
-	printf("Dump %u Bytes from %p:\r\n", size, src);
-	printf("            00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F\r\n");
-	
-	for (uint32_t i = 0; i < size; i++) {
-		if (i % 16 == 0) {
-			printf("%p: ", &src[i]);
-		}
-		
-		printf("%02x ", src[i]);
-		
-		if (i % 16 == 15) {
-			printf("\r\n");
-		}
-	}
-}
-
-#endif
+#endif //UART_H

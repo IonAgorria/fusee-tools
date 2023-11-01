@@ -442,7 +442,6 @@ number:
 #undef PCHAR
 }
 
-
 /* Thanks to James Cone (https://github.com/JamesC1) for this */
 void
 sprintf(char *buffer, const char *fmt, ...)
