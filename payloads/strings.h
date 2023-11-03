@@ -70,8 +70,7 @@ char const hex2ascii_data[] = "0123456789abcdefghijklmnopqrstuvwxyz";
 #define va_arg __builtin_va_arg
 #define va_end __builtin_va_end
 #define toupper(c)      ((c) - 0x20 * (((c) >= 'a') && ((c) <= 'z')))
-size_t
-strlen(const char *s)
+static size_t strlen(const char *s)
 {
 	size_t l = 0;
 	while (*s++)
@@ -88,8 +87,7 @@ strlen(const char *s)
  * written in the buffer (i.e., the first character of the string).
  * The buffer pointed to by `nbuf' must have length >= MAXNBUF.
  */
-static char *
-ksprintn(char *nbuf, uintmax_t num, int base, int *lenp, int upper)
+static char* ksprintn(char *nbuf, uintmax_t num, int base, int *lenp, int upper)
 {
 	char *p, c;
 
@@ -130,8 +128,7 @@ ksprintn(char *nbuf, uintmax_t num, int base, int *lenp, int upper)
  *		("%6D", ptr, ":")   -> XX:XX:XX:XX:XX:XX
  *		("%*D", len, ptr, " " -> XX XX XX XX ...
  */
-int
-kvprintf(char const *fmt, void (*func)(int, void*), void *arg, int radix, va_list ap)
+static int kvprintf(char const *fmt, void (*func)(int, void*), void *arg, int radix, va_list ap)
 {
 #define PCHAR(c) {int cc=(c); if (func) (*func)(cc,arg); else *d++ = cc; retval++; }
 	char nbuf[MAXNBUF];
@@ -443,8 +440,7 @@ number:
 }
 
 /* Thanks to James Cone (https://github.com/JamesC1) for this */
-void
-sprintf(char *buffer, const char *fmt, ...)
+static void sprintf(char *buffer, const char *fmt, ...)
 {
 	va_list ap;
 

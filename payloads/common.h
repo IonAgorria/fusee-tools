@@ -1,12 +1,23 @@
 #ifndef COMMON_H
 #define COMMON_H
+
+#define __unused __attribute__((__unused__))
+
+//Workaround in case there is code before main(), make sure we jump into main()
+void main();
+__unused void payload_main() {
+	main();
+}
+
 #define _REG(base, off) *(volatile unsigned int *)((base) + (off))
 #define reg_write(base, off, value) _REG(base, off) = value
 #define reg_clear(base, off, value) _REG(base, off) &= ~value
 #define reg_set(base, off, value) _REG(base, off) |= value
 #define reg_read(base, off) _REG(base, off)
 
+#define PINMUX_BASE					(0x70003000)
 #define PMC_BASE					(0x7000e400)
+#define APBDEV_PMC_SCRATCH0_0			(0x50)
 #define APBDEV_PMC_SCRATCH41_0			(0x140)
 #define APBDEV_PMC_SCRATCH42_0			(0x144)
 

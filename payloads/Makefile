@@ -18,6 +18,8 @@ override CFLAGS += \
 	-Wno-error=unused-function \
 	-fomit-frame-pointer \
 	-g \
+	-fdce -fdse -ftree-dce -ftree-dse \
+	-finline-functions-called-once \
 	-O0
 
 #Required for -lgcc
@@ -84,13 +86,13 @@ payloads: clean_objs \
 make_folder:
 	mkdir -p out/elf/ out/$(SOC)
 
-%_uart.bin: %_uart.elf
-	$(OBJCOPY) -v -O binary out/elf/$(SOC)_$(UART)_$< out/$(SOC)/$(@:.bin=_$(UART).bin)
-	rm out/elf/$(SOC)_$(UART)_$<
-
 %.bin: %.elf
 	$(OBJCOPY) -v -O binary out/elf/$(SOC)_$< out/$(SOC)/$@
 	rm out/elf/$(SOC)_$<
+
+%_uart.bin: %_uart.elf
+	$(OBJCOPY) -v -O binary out/elf/$(SOC)_$(UART)_$< out/$(SOC)/$(@:.bin=_$(UART).bin)
+	rm out/elf/$(SOC)_$(UART)_$<
 
 %.elf: %.o
 	$(LD) $^ -T common.lds --defsym LOAD_ADDR=$(ENTRY_ADDR) $(LDFLAGS) -o out/elf/$(SOC)_$@

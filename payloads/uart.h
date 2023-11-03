@@ -7,25 +7,29 @@
 #define APBDEV_PMC_IO_DPD_REQ_0				(0x1b8)
 #define UART_DPD_BIT					(1 << 14)
 
-#define PINMUX_BASE					(0x70003000)
-
+#ifdef T20
 #define APB_MISC_PP_TRISTATE_REG_B_0			(0x18)	/* T20 uart-b UAD TRISTATE */
 #define UAD_TRISTATE_ON					(1 << 21)
 
 #define APB_MISC_PP_PIN_MUX_CTL_A_0			(0x80)	/* T20 uart-b UAD GROUP MUX */
 #define UAD_SEL_MASK					(0b11 << 6)
+#endif //T20
 
+#ifdef T30
 #define PINMUX_AUX_ULPI_DATA0_0				(0x00)	/* T30 uart-a tx */
 #define PINMUX_AUX_ULPI_DATA1_0				(0x04)	/* T30 uart-a rx */
 
 #define PINMUX_AUX_ULPI_CLK_0				(0x20)	/* T30 uart-d tx */
 #define PINMUX_AUX_ULPI_DIR_0				(0x24)	/* T30 uart-d rx */
+#endif //T30
 
+#ifdef T114
 #define PINMUX_AUX_SDMMC3_DAT1_0 			(0x39c)	/* T114 uart-a tx */
 #define PINMUX_AUX_SDMMC3_CMD_0				(0x394)	/* T114 uart-a rx */
 
 #define PINMUX_AUX_GMI_A16_0 				(0x230)	/* T114 uart-d tx */
 #define PINMUX_AUX_GMI_A17_0				(0x234)	/* T114 uart-d rx */
+#endif //T114
 
 #define CAR_BASE					(0x60006000)
 #define CLK_SOURCE_PLLP					(0x0)
@@ -85,13 +89,30 @@
   #define UART_CAR_MASK					UARTD_CAR_MASK
   #define CLK_RST_CONTROLLER_CLK_SOURCE_UART		CLK_RST_CONTROLLER_CLK_SOURCE_UARTD_0
 #else
-    #error No UART specified
+  #error No UART specified
 #endif
 
-void uart_init() {
+// put the char into the tx fifo and wait for tx fifo to clear 
+static void uart_putc(char c) {
+	/* put the char into the tx fifo */
+	reg_write(UART_BASE, UART_THR_DLAB, (c));
+
+	/* wait for tx fifo to clear */
+	while(!((reg_read(UART_BASE, UART_LSR) >> 5) & 0x01));
+}
+
+static void uart_print_line() {
+	uart_putc('\n');
+	for (int i = 0; i < 64; i++) {
+		uart_putc('-');
+	}
+	uart_putc('\n');
+	uart_putc('\n');
+}
+
+static void uart_init() {
 	if(reg_read(PMC_BASE, APBDEV_PMC_SCRATCH42_0) != MAGIC_VALUE) {
 
-#ifdef UART_BASE
 #if defined(T20) && defined(UART_B_USE)
 		/* T20 cannot configure individual pins, only groups */
 		reg_set(PINMUX_BASE, APB_MISC_PP_TRISTATE_REG_B_0, UAD_TRISTATE_ON);
@@ -140,33 +161,55 @@ void uart_init() {
 
 		/* enable tx/rx fifos */
 		reg_write(UART_BASE, UART_IIR_FCR, FCR_EN_FIFO);
-#endif
 
 		/* prevent this uart-N initialization from being done on subsequent calls to uart_print() */
 		reg_write(PMC_BASE, APBDEV_PMC_SCRATCH42_0, MAGIC_VALUE);
 		
 		/* use this reg as UART_MUTEX in a multicore set up :) */
 		//reg_write(PMC_BASE, APBDEV_PMC_SCRATCH41_0, 0);
+		
+		//Warm up UART
+		uart_print_line();
 	}
 }
 
-
-// put the char into the tx fifo and wait for tx fifo to clear 
-#define UART_PUTC(c) \
-	reg_write(UART_BASE, UART_THR_DLAB, (c)); \
-	while(!((reg_read(UART_BASE, UART_LSR) >> 5) & 0x01));
-
-void uart_print(const char *string) {
+__unused static  void uart_print(const char *string) {
 	// use this to keep track of if uart has been initialized
 	uart_init();
 	
 	// send all characters until NULL to uart-N
 	while(*string) {
-		UART_PUTC(*string);
+		uart_putc((char) *string);
 
 		// move on to next char
 		++string;
     }
+}
+
+__unused void uart_dump_memory(uint8_t* src, uint32_t size) {
+	uart_init();
+	
+	/*
+	 * Dump data into .txt, then convert to binary with this python 3 code:
+	 
+with open("dump.txt", "r") as a: b = a.readlines()
+c = []
+for l in b:
+    for x in l.strip().split(" "): 
+        c.append(int(x, 16))
+with open("dump.bin", 'wb') as f: f.write(bytes(c))
+
+	 */
+	
+	for (uint32_t i = 0; i < size; i++) {
+		if (i != 0) {
+			uart_putc((i % 16 == 0) ? '\n' : ' ');
+		}
+		uint8_t val = (src[i] & 0xF0) >> 4;
+		uart_putc((val < 10 ? '0' : '7') + val);
+		val = src[i] & 0xF;
+		uart_putc((val < 10 ? '0' : '7') + val);
+	}
 }
 
 #endif //UART_H

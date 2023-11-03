@@ -1,11 +1,11 @@
 #ifndef PRINTF_H
 #define PRINTF_H
 
-void putc(int c, void *stream) {
+static void putc(int c, void *stream) {
 	UART_PUTC(c);
 }
 
-void printf(const char *fmt, ...) {
+static void printf(const char *fmt, ...) {
 	va_list ap;
 	uart_init();
 
@@ -14,7 +14,7 @@ void printf(const char *fmt, ...) {
 	va_end(ap);
 }
 
-void dump_memory(uint8_t *src, uint32_t size) {
+static void dump_memory(uint8_t *src, uint32_t size) {
 	printf("Dump %u Bytes from %p:\r\n", size, src);
 	printf("            00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F\r\n");
 	
