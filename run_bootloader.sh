@@ -1,12 +1,15 @@
 #!/bin/bash
 
-while getopts "s:t:" option; do
+while getopts "s:t:b:" option; do
     case "${option}" in
         s)
             gen=${OPTARG}
             ;;
         t)
             bct=${OPTARG}
+            ;;
+        b)
+            bootloader=${OPTARG}
             ;;
         *)
             echo "     With -s you MUST specify tegra SOC generation"
@@ -23,12 +26,22 @@ if [ "$gen" = "" ]; then
     exit 3
 fi
 
+if [ "$gen" = "T114" ]; then
+    nvflash="nvflash_v3.08.1700_miniloader_patched"
+else
+    nvflash="nvflash_v1.13.87205_miniloader_patched"
+fi
+
 if [ "$bct" = "" ]; then
     bct="current.bct"
+fi
+
+if [ "$bootloader" = "" ]; then
+    bootloader="u-boot-dtb-tegra.bin"
 fi
 
 ./fusee-launcher-new/fusee-launcher.py ./payloads/out/"$gen"/patch_irom.bin
 
 sleep 1
 
-./utils/nvflash_v3.08.1700 --getbct --bct "$bct" --configfile ./utils/flash.cfg
+./utils/"$nvflash" --setbct --bct "$bct" --configfile ./utils/flash.cfg --bl "$bootloader" --go
