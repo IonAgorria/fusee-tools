@@ -23,6 +23,12 @@ if [ "$gen" = "" ]; then
     exit 3
 fi
 
+if [ "$gen" = "T114" ]; then
+    nvflash="nvflash_v3.08.1700"
+else
+    nvflash="nvflash_v1.13.87205"
+fi
+
 if [ "$bct" = "" ]; then
     bct="current.bct"
 fi
@@ -31,4 +37,4 @@ fi
 
 sleep 1
 
-./utils/nvflash_v3.08.1700 --getbct --bct "$bct" --configfile ./utils/flash.cfg
+./utils/"$nvflash" --getbct --bct "$bct" --configfile ./utils/flash.cfg
