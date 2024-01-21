@@ -36,7 +36,7 @@ T20:
 		ENTRY_ADDR=0x40008000 \
 		payloads
 
-T30: T30_A T30_D
+T30: T30_A T30_D T30_E
 
 T30_A:
 	$(MAKE) \
@@ -49,6 +49,13 @@ T30_D:
 	$(MAKE) \
 		SOC=T30 \
 		UART=D \
+		ENTRY_ADDR=0x4000A000 \
+		payloads
+
+T30_E:
+	$(MAKE) \
+		SOC=T30 \
+		UART=E \
 		ENTRY_ADDR=0x4000A000 \
 		payloads
 

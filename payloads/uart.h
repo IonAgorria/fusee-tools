@@ -21,6 +21,9 @@
 
 #define PINMUX_AUX_ULPI_CLK_0				(0x20)	/* T30 uart-d tx */
 #define PINMUX_AUX_ULPI_DIR_0				(0x24)	/* T30 uart-d rx */
+
+#define PINMUX_AUX_SDMMC1_DAT3_0			(0x50) /* T30 uart-e tx */
+#define PINMUX_AUX_SDMMC1_DAT2_0			(0x54) /* T30 uart-e rx */
 #endif //T30
 
 #ifdef T114
@@ -70,6 +73,12 @@
 #define CLK_RST_CONTROLLER_CLK_SOURCE_UARTD_0		(0x1c0)
 #define UARTD_CAR_MASK					(1 << 1)
 
+#define UARTE_BASE					(0x70006400)
+#define CLK_RST_CONTROLLER_CLK_OUT_ENB_U_0		(0x18)
+#define CLK_RST_CONTROLLER_RST_DEVICES_U_0		(0x0c)
+#define CLK_RST_CONTROLLER_CLK_SOURCE_UARTE_0		(0x1c4)
+#define UARTE_CAR_MASK					(1 << 2)
+
 #if defined(UART_A_USE)
   #define UART_BASE 					UARTA_BASE
   #define CLK_RST_CONTROLLER_CLK_OUT_ENB 		CLK_RST_CONTROLLER_CLK_OUT_ENB_L_0
@@ -88,6 +97,12 @@
   #define CLK_RST_CONTROLLER_RST_DEVICES		CLK_RST_CONTROLLER_RST_DEVICES_U_0
   #define UART_CAR_MASK					UARTD_CAR_MASK
   #define CLK_RST_CONTROLLER_CLK_SOURCE_UART		CLK_RST_CONTROLLER_CLK_SOURCE_UARTD_0
+#elif defined(UART_E_USE)
+  #define UART_BASE					UARTE_BASE
+  #define CLK_RST_CONTROLLER_CLK_OUT_ENB		CLK_RST_CONTROLLER_CLK_OUT_ENB_U_0
+  #define CLK_RST_CONTROLLER_RST_DEVICES		CLK_RST_CONTROLLER_RST_DEVICES_U_0
+  #define UART_CAR_MASK					UARTE_CAR_MASK
+  #define CLK_RST_CONTROLLER_CLK_SOURCE_UART		CLK_RST_CONTROLLER_CLK_SOURCE_UARTE_0
 #else
   #error No UART specified
 #endif
@@ -123,6 +138,9 @@ static void uart_init() {
 #elif defined(T30) && defined(UART_D_USE)
 		reg_write(PINMUX_BASE, PINMUX_AUX_ULPI_CLK_0, 0b00000110); /* tx */
 		reg_write(PINMUX_BASE, PINMUX_AUX_ULPI_DIR_0, 0b00100110); /* rx */
+#elif defined(T30) && defined(UART_E_USE)
+		reg_write(PINMUX_BASE, PINMUX_AUX_SDMMC1_DAT3_0, 0b00000110); /* tx */
+		reg_write(PINMUX_BASE, PINMUX_AUX_SDMMC1_DAT2_0, 0b00100110); /* rx */
 #elif defined(T114) && defined(UART_A_USE)
 		reg_write(PINMUX_BASE, PINMUX_AUX_SDMMC3_DAT1_0, 0); /* tx */
 		reg_write(PINMUX_BASE, PINMUX_AUX_SDMMC3_CMD_0, 0); /* rx */
@@ -203,6 +221,7 @@ with open("dump.bin", 'wb') as f: f.write(bytes(c))
 	
 	for (uint32_t i = 0; i < size; i++) {
 		if (i != 0) {
+			uart_putc((i % 16 == 0) ? '\r' : ' ');
 			uart_putc((i % 16 == 0) ? '\n' : ' ');
 		}
 		uint8_t val = (src[i] & 0xF0) >> 4;
