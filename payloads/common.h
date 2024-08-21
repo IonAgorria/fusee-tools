@@ -15,7 +15,6 @@ __unused void payload_main() {
 #define reg_set(base, off, value) _REG(base, off) |= value
 #define reg_read(base, off) _REG(base, off)
 
-#define PINMUX_BASE					(0x70003000)
 #define PMC_BASE					(0x7000e400)
 #define APBDEV_PMC_SCRATCH0_0			(0x50)
 #define APBDEV_PMC_SCRATCH41_0			(0x140)

@@ -8,11 +8,18 @@
 #define UART_DPD_BIT					(1 << 14)
 
 #ifdef T20
+#define PINMUX_BASE					(0x70000000)
+#else
+#define PINMUX_BASE					(0x70003000)
+#endif
+
+#ifdef T20
+
 #define APB_MISC_PP_TRISTATE_REG_B_0			(0x18)	/* T20 uart-b UAD TRISTATE */
-#define UAD_TRISTATE_ON					(1 << 21)
+#define APB_MISC_PP_TRISTATE_REG_UAD_TRISTATE	(1 << 21)
 
 #define APB_MISC_PP_PIN_MUX_CTL_A_0			(0x80)	/* T20 uart-b UAD GROUP MUX */
-#define UAD_SEL_MASK					(0b11 << 6)
+#define APB_MISC_PP_PIN_MUX_UAD_SEL_MASK	(0b11 << 6)
 #endif //T20
 
 #ifdef T30
@@ -115,8 +122,8 @@ static void uart_init() {
 
 #if defined(T20) && defined(UART_B_USE)
 		/* T20 cannot configure individual pins, only groups */
-		reg_set(PINMUX_BASE, APB_MISC_PP_TRISTATE_REG_B_0, UAD_TRISTATE_ON);
-		reg_clear(PINMUX_BASE, APB_MISC_PP_PIN_MUX_CTL_A_0, UAD_SEL_MASK);
+		reg_clear(PINMUX_BASE, APB_MISC_PP_TRISTATE_REG_B_0, APB_MISC_PP_TRISTATE_REG_UAD_TRISTATE);
+		reg_clear(PINMUX_BASE, APB_MISC_PP_PIN_MUX_CTL_A_0, APB_MISC_PP_PIN_MUX_UAD_SEL_MASK);
 #elif defined(T30) && defined(UART_A_USE)
 		reg_write(PINMUX_BASE, PINMUX_AUX_ULPI_DATA0_0, 0b00000110); /* tx */
 		reg_write(PINMUX_BASE, PINMUX_AUX_ULPI_DATA1_0, 0b00100110); /* rx */
