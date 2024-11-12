@@ -2,12 +2,14 @@ CROSS_COMPILE = arm-none-eabi-
 
 # Use our cross-compile prefix to set up our basic cross compile environment.
 CC      = $(CROSS_COMPILE)gcc
+AS      = $(CROSS_COMPILE)as
 LD      = $(CROSS_COMPILE)ld
 OBJCOPY = $(CROSS_COMPILE)objcopy
 
 override CFLAGS += \
 	-mtune=arm7tdmi \
 	-mlittle-endian \
+	-ffunction-sections \
 	-fno-stack-protector \
 	-fno-common \
 	-fno-builtin \
@@ -22,9 +24,7 @@ override CFLAGS += \
 	-finline-functions-called-once \
 	-O0
 
-#Required for -lgcc
-GCC_LIB := "/usr/lib/gcc/$(CROSS_COMPILE:-=)/$(shell $(CC) -dumpversion)"
-LDFLAGS ?= -nostdlib -L$(GCC_LIB) -lgcc
+LDFLAGS ?= -nostdlib --gc-sections
 #-Map=$(basename $@).map
 
 all: T20 T30 T114
@@ -83,6 +83,7 @@ T114_D:
 
 payloads: clean_objs \
 	make_folder \
+	idivmod.o \
 	pmc_reset.bin \
 	patch_irom.bin \
 	dump_fuse_usb.bin \
@@ -92,21 +93,21 @@ payloads: clean_objs \
 	dump_sbk_usb.bin
 
 make_folder:
-	mkdir -p out/elf/ out/$(SOC)
+	mkdir -p out/tmp/ out/$(SOC)
 
 %.bin: %.elf
-	$(OBJCOPY) -v -O binary out/elf/$(SOC)_$< out/$(SOC)/$@
-	rm out/elf/$(SOC)_$<
+	$(OBJCOPY) -v -O binary out/tmp/$(SOC)_$< out/$(SOC)/$@
+	rm out/tmp/$(SOC)_$<
 
 %_uart.bin: %_uart.elf
-	$(OBJCOPY) -v -O binary out/elf/$(SOC)_$(UART)_$< out/$(SOC)/$(@:.bin=_$(UART).bin)
-	rm out/elf/$(SOC)_$(UART)_$<
+	$(OBJCOPY) -v -O binary out/tmp/$(SOC)_$(UART)_$< out/$(SOC)/$(@:.bin=_$(UART).bin)
+	rm out/tmp/$(SOC)_$(UART)_$<
 
 %.elf: %.o
-	$(LD) $^ -T common.lds --defsym LOAD_ADDR=$(ENTRY_ADDR) $(LDFLAGS) -o out/elf/$(SOC)_$@
+	$(LD) $^ out/tmp/idivmod.o -T common.lds --defsym LOAD_ADDR=$(ENTRY_ADDR) $(LDFLAGS) -o out/tmp/$(SOC)_$@
 
 %_uart.elf: %_uart.o
-	$(LD) $^ -T common.lds --defsym LOAD_ADDR=$(ENTRY_ADDR) $(LDFLAGS) -o out/elf/$(SOC)_$(UART)_$@
+	$(LD) $^ out/tmp/idivmod.o -T common.lds --defsym LOAD_ADDR=$(ENTRY_ADDR) $(LDFLAGS) -o out/tmp/$(SOC)_$(UART)_$@
 
 %.o: %.c
 	$(CC) $(CFLAGS) -D$(SOC) $< -c -o $@
@@ -114,11 +115,13 @@ make_folder:
 %_uart.o: %_uart.c
 	$(CC) $(CFLAGS) -D$(SOC) -DUART_$(UART)_USE $< -c -o $@
 
+%.o: %.S
+	$(AS) -c -o out/tmp/$@ $<
 
 clean: clean_objs
 	rm -f out/*/*.bin
 
 clean_objs:
-	rm -f *.o *.map out/elf/*.elf
+	rm -f *.o *.map out/tmp/*
 
 .PHONY: all clean

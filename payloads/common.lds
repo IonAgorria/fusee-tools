@@ -8,7 +8,16 @@ SECTIONS
 	. = LOAD_ADDR;
 
 	.text : {
-		*(.text)
+	    . = ALIGN(4);
+        *(.text.main)
+        *(.text)
+        *(.text*)
+        *(.text.END_ADDR)
+	}
+
+	.data : {
+        *(.data)
+        *(.data.END_ADDR)
 	}
 
 	/* always end on a word boundary for our copy */
@@ -19,5 +28,4 @@ SECTIONS
 	/DISCARD/ : { *(.plt*) }
 	/DISCARD/ : { *(.interp*) }
 	/DISCARD/ : { *(.gnu*) }
-	/DISCARD/ : { *(.data*) }
 }
