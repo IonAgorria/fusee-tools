@@ -1,4 +1,3 @@
-#include <stdint.h>
 #include "common.h"
 
 #define PINMUX_BASE					(0x70003000)

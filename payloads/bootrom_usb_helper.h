@@ -3,7 +3,6 @@
 
 #include "size.h"
 #include "soc.h"
-#include <stdint.h>
 
 #if defined(T20)
     //TODO define these

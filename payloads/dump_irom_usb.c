@@ -1,4 +1,3 @@
-#include <stdint.h>
 #include "common.h"
 #include "bootrom_usb_helper.h"
 #include "soc.h"
