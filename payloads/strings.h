@@ -87,7 +87,7 @@ static size_t strlen(const char *s)
  * written in the buffer (i.e., the first character of the string).
  * The buffer pointed to by `nbuf' must have length >= MAXNBUF.
  */
-static char* ksprintn(char *nbuf, uintmax_t num, int base, int *lenp, int upper)
+static char* ksprintn(char *nbuf, uint32_t num, int base, int *lenp, int upper)
 {
 	char *p, c;
 
