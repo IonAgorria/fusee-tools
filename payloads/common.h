@@ -1,6 +1,8 @@
 #ifndef COMMON_H
 #define COMMON_H
 
+#include <stdint.h>
+
 #define __unused __attribute__((__unused__))
 
 //Workaround in case there is code before main(), make sure we jump into main()

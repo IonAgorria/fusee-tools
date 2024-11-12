@@ -1,4 +1,3 @@
-#include <stdint.h>
 #include "common.h"
 #include "strings.h"
 #include "soc.h"
