@@ -1,4 +1,4 @@
-#include <stdint.h>
+#include "common.h"
 #include "size.h"
 #include "soc.h"
 #include "bootrom_usb_helper.h"
@@ -14,7 +14,7 @@
 
 //void transfer_data(void *data, uint32_t size);
 
-int main() {
+void main() {
 	
 	char str[] = "Hello, this is a message from Surface 2 :)";
 	
@@ -28,6 +28,4 @@ int main() {
 */	
 	
 	while(1);
-	
-	return 0;
 }

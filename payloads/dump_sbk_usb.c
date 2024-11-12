@@ -1,4 +1,3 @@
-#include <stdint.h>
 #include "soc.h"
 #include "common.h"
 #include "pmc_reset.h"
