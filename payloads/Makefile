@@ -89,7 +89,8 @@ payloads: clean_objs \
 	dump_ipatches_usb.bin \
 	dump_irom_usb.bin \
 	dump_irom_uart.bin \
-	dump_sbk_usb.bin
+	dump_sbk_usb.bin \
+	test_usb.bin
 
 make_folder:
 	mkdir -p out/tmp/ out/$(SOC)
