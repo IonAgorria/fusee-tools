@@ -22,6 +22,7 @@ __unused void payload_main() {
 #define APBDEV_PMC_SCRATCH0_0			(0x50)
 #define APBDEV_PMC_SCRATCH41_0			(0x140)
 #define APBDEV_PMC_SCRATCH42_0			(0x144)
+#define BIT(X) (1<<X)
 
 #define BOOTROM_START			0xfff00000
 
