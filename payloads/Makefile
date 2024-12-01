@@ -90,6 +90,7 @@ payloads: clean_objs \
 	dump_irom_usb.bin \
 	dump_irom_uart.bin \
 	dump_sbk_usb.bin \
+	exploit_partial_key_usb.bin \
 	test_usb.bin
 
 make_folder:
