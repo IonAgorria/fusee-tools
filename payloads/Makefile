@@ -91,7 +91,11 @@ payloads: clean_objs \
 	dump_ipatches_usb.bin \
 	dump_irom_usb.bin \
 	dump_irom_uart.bin \
+	dump_irom_to_iram.bin \
+	dump_irom_to_iram_thumb.bin \
 	dump_sbk_usb.bin \
+	dump_sbk_to_iram.bin \
+	dump_sbk_to_iram_thumb.bin \
 	test_usb.bin
 
 make_folder:
