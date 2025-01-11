@@ -19,11 +19,19 @@ __unused void payload_main() {
 #define reg_set(base, off, value) _REG(base, off) |= value
 #define reg_read(base, off) _REG(base, off)
 
+#define swap_endian_32(input) ( \
+    ((input >> 24) & 0x000000ff) | \
+    ((input >>  8) & 0x0000ff00) | \
+    ((input <<  8) & 0x00ff0000) | \
+    ((input << 24) & 0xff000000)   \
+)
+
 #define PINMUX_BASE					(0x70003000)
 #define PMC_BASE					(0x7000e400)
 #define APBDEV_PMC_SCRATCH0_0			(0x50)
 #define APBDEV_PMC_SCRATCH41_0			(0x140)
 #define APBDEV_PMC_SCRATCH42_0			(0x144)
+#define FUSE_PRIVATE_KEY0			(0x7000F9A4)
 
 #define BOOTROM_START			0xfff00000
 
