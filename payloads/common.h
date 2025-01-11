@@ -5,11 +5,13 @@
 
 #define __unused __attribute__((__unused__))
 
+#ifndef NO_MAIN_WORKAROUND
 //Workaround in case there is code before main(), make sure we jump into main()
 void main();
 __unused void payload_main() {
 	main();
 }
+#endif
 
 #define _REG(base, off) *(volatile unsigned int *)((base) + (off))
 #define reg_write(base, off, value) _REG(base, off) = value
