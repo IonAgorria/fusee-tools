@@ -12,7 +12,7 @@ void main()
 	int32_t i;
 	
 	for (i = 0; i < 4; i++) {
-		sbk[i] = reg_read(FUSE_PRIVATE_KEY0, i * 4);
+		sbk[i] = reg_read(FUSE_BASE, FUSE_PRIVATE_KEY0 + i * 4);
 		sbk[i] = swap_endian_32(sbk[i]);
 	}
 

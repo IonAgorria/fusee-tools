@@ -2,14 +2,8 @@
 #include "strings.h"
 #include "soc.h"
 #include "bootrom_usb_helper.h"
+#include "pmc_reset.h"
 
-
-/* ipatch hardware */
-#define IPATCH_BASE					(0x6001dc00)
-#define IPATCH_SELECT				(0x0)
-#define IPATCH_REGS					(0x4)
-
-void dump_memory(uint8_t *src, uint32_t size);
 
 void main()
 {
@@ -37,6 +31,12 @@ void main()
 		ipatch_select >>= 1;
 	}
 	
+	sprintf(buf, "Patch select: 0x%08x\n", ipatch_select);
+	usb_transfer_data(buf, strlen(buf));
+	uint32_t count = reg_read(FUSE_BASE, FUSE_BOOTROM_PATCH_SIZE_0);
+	sprintf(buf, "Fuse count: 0x%08x\n", count);
+	usb_transfer_data(buf, strlen(buf));
+	
 
-	while(1);
+	pmc_reset();
 }

@@ -5,6 +5,7 @@
 
 void main()
 {
+	reg_write(IPATCH_BASE, IPATCH_SELECT, 0x0);
     uint32_t* src = (uint32_t*) BOOTROM_START;
     uint32_t* dst = (uint32_t*) 0x40009000;
 	*((uint32_t*) (dst - 2)) = 0xC0DECAFE;
