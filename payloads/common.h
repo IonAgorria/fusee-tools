@@ -31,9 +31,17 @@ __unused void payload_main() {
 #define APBDEV_PMC_SCRATCH0_0			(0x50)
 #define APBDEV_PMC_SCRATCH41_0			(0x140)
 #define APBDEV_PMC_SCRATCH42_0			(0x144)
-#define FUSE_PRIVATE_KEY0			(0x7000F9A4)
+	
+#define FUSE_BASE					(0x7000f800U)
+#define FUSE_PRIVATE_KEY0			(0x1a4)
+#define FUSE_BOOTROM_PATCH_SIZE_0	(0x19c)
 
-#define BOOTROM_START			0xfff00000
+/* ipatch hardware */
+#define IPATCH_BASE					(0x6001dc00)
+#define IPATCH_SELECT				(0x0)
+#define IPATCH_REGS					(0x4)
+
+#define BOOTROM_START				(0xfff00000)
 
 /*
 
