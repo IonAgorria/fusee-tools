@@ -9,4 +9,17 @@
     #error No SoC specified
 #endif
 
+#if defined(T20)
+	#define BOOTROM_START_POST_IPATCH	BOOTROM_START
+	#define IROM_PATCH_ADDRESS		0x0
+#elif defined(T30)
+	#define BOOTROM_START_POST_IPATCH	(BOOTROM_START + 0x1004)
+    #define IROM_PATCH_ADDRESS		(BOOTROM_START + 0x1cd4)
+#elif defined(T114)
+    #define BOOTROM_START_POST_IPATCH	(BOOTROM_START + 0x1008)
+    #define IROM_PATCH_ADDRESS		(BOOTROM_START + 0x22ac)
+#else
+    #error No SoC specified
+#endif
+
 #endif //SOC_H

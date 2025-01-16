@@ -60,4 +60,10 @@ uint32_t chipid = (chipid_reg >> 8) & 0xff;
 printf("chip_id: 0x%02x\r\n", chipid);
 */
 
+#define call_func(addr) { \
+	typedef void (*funcptr)(void); \
+	funcptr start = (funcptr) addr; \
+	start(); \
+}
+
 #endif //COMMON_H

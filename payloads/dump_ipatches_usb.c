@@ -24,7 +24,7 @@ void main()
 		//sprintf(buf, "Patch %d: 0x%08x;\n", counter, reg);
 		//usb_transfer_data(buf, strlen(buf));
 		
-		sprintf(buf, "Patch %d; Address 0x%08x: 0x%04x;\n", counter, 0xfff00000 | ((reg >> 16)<<1), reg & 0xffff);
+		sprintf(buf, "Patch %d; Address 0x%08x: 0x%04x;\n", counter, BOOTROM_START | ((reg >> 16)<<1), reg & 0xffff);
 		usb_transfer_data(buf, strlen(buf));
 		
 		counter++;
