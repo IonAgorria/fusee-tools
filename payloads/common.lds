@@ -8,7 +8,10 @@ SECTIONS
 	. = LOAD_ADDR;
 
 	.text : {
-		*(.text)
+        . = ALIGN(4);
+        *(.text.main)
+        *(.text)
+        *(.text*)
 	}
 
 	/* always end on a word boundary for our copy */

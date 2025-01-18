@@ -9,6 +9,7 @@ OBJCOPY = $(CROSS_COMPILE)objcopy
 override CFLAGS += \
 	-mtune=arm7tdmi \
 	-mlittle-endian \
+	-ffunction-sections \
 	-fno-stack-protector \
 	-fno-common \
 	-fno-builtin \
@@ -23,7 +24,7 @@ override CFLAGS += \
 	-finline-functions-called-once \
 	-O0
 
-LDFLAGS ?= -nostdlib
+LDFLAGS ?= -nostdlib --gc-sections
 #-Map=$(basename $@).map
 
 all: T20 T30 T114

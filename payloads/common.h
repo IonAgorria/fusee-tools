@@ -5,14 +5,6 @@
 
 #define __unused __attribute__((__unused__))
 
-#ifndef NO_MAIN_WORKAROUND
-//Workaround in case there is code before main(), make sure we jump into main()
-void main();
-__unused void payload_main() {
-	main();
-}
-#endif
-
 #define PINMUX_BASE					(0x70003000)
 #define PMC_BASE					(0x7000e400)
 #define APBDEV_PMC_SCRATCH0_0			(0x50)

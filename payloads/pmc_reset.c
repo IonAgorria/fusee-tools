@@ -1,4 +1,3 @@
-#define NO_MAIN_WORKAROUND
 #include "common.h"
 #include "pmc_reset.h"
 
