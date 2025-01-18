@@ -61,4 +61,7 @@ printf("chip_id: 0x%02x\r\n", chipid);
 #define min(a, b) ((a > b) ? b : a)
 #define max(a, b) ((a > b) ? a : b)
 
+//Used to know the payload end address (size can be inferred by &END_ADDR - &main)
+__unused static const uint32_t END_ADDR = 0xFADEC0DE;
+
 #endif //COMMON_H
