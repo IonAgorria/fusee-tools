@@ -13,19 +13,6 @@ __unused void payload_main() {
 }
 #endif
 
-#define _REG(base, off) *(volatile unsigned int *)((base) + (off))
-#define reg_write(base, off, value) _REG(base, off) = value
-#define reg_clear(base, off, value) _REG(base, off) &= ~value
-#define reg_set(base, off, value) _REG(base, off) |= value
-#define reg_read(base, off) _REG(base, off)
-
-#define swap_endian_32(input) ( \
-    ((input >> 24) & 0x000000ff) | \
-    ((input >>  8) & 0x0000ff00) | \
-    ((input <<  8) & 0x00ff0000) | \
-    ((input << 24) & 0xff000000)   \
-)
-
 #define PINMUX_BASE					(0x70003000)
 #define PMC_BASE					(0x7000e400)
 #define APBDEV_PMC_SCRATCH0_0			(0x50)
@@ -59,6 +46,19 @@ uint32_t chipid_reg = reg_read(TEGRA_APB_MISC_BASE, APB_MISC_GP_HIDREV_0);
 uint32_t chipid = (chipid_reg >> 8) & 0xff;
 printf("chip_id: 0x%02x\r\n", chipid);
 */
+
+#define _REG(base, off) *(volatile unsigned int *)((base) + (off))
+#define reg_write(base, off, value) _REG(base, off) = value
+#define reg_clear(base, off, value) _REG(base, off) &= ~value
+#define reg_set(base, off, value) _REG(base, off) |= value
+#define reg_read(base, off) _REG(base, off)
+
+#define swap_endian_32(input) ( \
+    ((input >> 24) & 0x000000ff) | \
+    ((input >>  8) & 0x0000ff00) | \
+    ((input <<  8) & 0x00ff0000) | \
+    ((input << 24) & 0xff000000)   \
+)
 
 #define call_func(addr) { \
 	typedef void (*funcptr)(void); \
