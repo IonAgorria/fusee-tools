@@ -66,4 +66,7 @@ printf("chip_id: 0x%02x\r\n", chipid);
 	start(); \
 }
 
+#define min(a, b) ((a > b) ? b : a)
+#define max(a, b) ((a > b) ? a : b)
+
 #endif //COMMON_H
