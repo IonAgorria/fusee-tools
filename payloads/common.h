@@ -8,6 +8,9 @@
 #define PINMUX_BASE					(0x70003000)
 #define PMC_BASE					(0x7000e400)
 #define APBDEV_PMC_SCRATCH0_0			(0x50)
+#define APBDEV_PMC_SCRATCH4_0			(0x60)
+#define APBDEV_PMC_SCRATCH24_0			(0xfc)
+#define APBDEV_PMC_SCRATCH32_0			(0x11c)
 #define APBDEV_PMC_SCRATCH41_0			(0x140)
 #define APBDEV_PMC_SCRATCH42_0			(0x144)
 	

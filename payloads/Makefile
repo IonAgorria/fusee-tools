@@ -96,6 +96,7 @@ payloads: clean_objs \
 	dump_sbk_usb.bin \
 	dump_sbk_iram.bin \
 	load_sbk_to_aes_engine.bin  \
+	iram_loader.bin  \
 	test_usb.bin
 
 make_folder:
