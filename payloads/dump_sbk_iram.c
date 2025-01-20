@@ -3,8 +3,8 @@
 
 void copy_sbk(void* dst, void* src) {
 	memcpy(dst, src, 16);
-	for (uint32_t f = 0; f < 4; f++) {
-		((uint32_t*) dst)[f + 4] = swap_endian_32(((uint32_t*) src)[f]);
+	for (uint32_t i = 0; i < 4; i++) {
+		((uint32_t*) dst)[i + 4] = swap_endian_32(((uint32_t*) src)[i]);
 	}
 }
 
@@ -13,10 +13,11 @@ void main()
 	void* iram = (void*) 0x40010000;
 	
 	//Copy to IRAM from fuses first
-	memcpy(iram, (void*) reg_read(FUSE_BASE, FUSE_PRIVATE_KEY0), 16);
+	memset(iram, 0xEA, 0x20);
+	copy_sbk(iram, (void*) FUSE_BASE + FUSE_PRIVATE_KEY0);
 	
 	//Now copy around IRAM
-	for (int i = 0; i < 0x100; ++i) {
+	for (int i = 1; i < 0x100; ++i) {
 		void* dst = iram + i * 0x100;
 		copy_sbk(dst, iram);
 		*((uint32_t*) (dst - 4)) = 0xC0DECAFE;
