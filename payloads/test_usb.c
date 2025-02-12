@@ -4,11 +4,12 @@
 #include "sleep.h"
 
 void main() {
-	char str[] = "Hello, this is a message over USB :)";
+	char str[] = "Hellooooooo, this is a message over USB :)\n";
 
-	for (int i = 0; i < 12; ++i) {
+    usb_init();
+	for (int i = 0; i < 60; ++i) {
 		usb_transfer_data(str, sizeof(str));
-		msleep(5000);
+		msleep(1000);
 	}
 
     pmc_reset_rcm();

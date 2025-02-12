@@ -16,10 +16,14 @@ void main()
 		sbk[i] = swap_endian_32(sbk[i]);
 	}
 
-	sprintf(buf, "Dumped SBK 0x%08x 0x%08x 0x%08x 0x%08x\n",
+	sprintf(buf, "Dumped SBK [ 0x%08x 0x%08x 0x%08x 0x%08x ]\n",
 		sbk[0], sbk[1], sbk[2], sbk[3]);
 
-	usb_transfer_data(buf, strlen(buf));
+    usb_init();
+    for (i = 0; i < 10; ++i) {
+	    usb_transfer_data(buf, strlen(buf));
+        msleep(100);
+    }
 
 	pmc_reset();
 }

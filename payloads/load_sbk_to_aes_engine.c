@@ -25,6 +25,7 @@ void main()
         sbk[i + 4] = swap_endian_32(sbk[i]);
     }
 #ifdef USB
+    usb_init();
 	usb_transfer_data(sbk, AES128_KEY_LENGTH);
 	for (int i = 0; i < 4; ++i) {
 		usb_transfer_data((void*) 0x6001b600 + (TEGRA_AES_HW_TABLE_LENGTH * i), TEGRA_AES_HW_TABLE_LENGTH);
