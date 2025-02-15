@@ -26,8 +26,6 @@
 #define IPATCH_SELECT				(0x0)
 #define IPATCH_REGS					(0x4)
 
-#define BOOTROM_START				(0xfff00000)
-
 /*
 
 #define TEGRA_APB_MISC_BASE		0x70000000

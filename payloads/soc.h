@@ -2,9 +2,15 @@
 #define SOC_H
 
 #if defined(T20) | defined(T30)
-    #define IROM_SIZE (48 * 1024)
+    #define BOOTROM_SIZE (48 * 1024)
 #elif defined(T114)
-    #define IROM_SIZE (64 * 1024)
+    #define BOOTROM_SIZE (64 * 1024)
+#else
+    #error No SoC specified
+#endif
+
+#if defined(T20) | defined(T30) | defined(T114)
+    #define BOOTROM_START (0xfff00000)
 #else
     #error No SoC specified
 #endif

@@ -1,5 +1,6 @@
 #include "common.h"
 #include "memory.h"
+#include "soc.h"
 
 void copy_sbk(void* dst, void* src) {
 	memcpy(dst, src, 16);
