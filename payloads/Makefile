@@ -74,13 +74,19 @@ T114_D:
 		UART=D \
 		ENTRY_ADDR=0x4000E000 \
 		payloads payloads_uart
+
+T124:
+	$(MAKE) \
+		SOC=T124 \
+		ENTRY_ADDR=0x4000E000 \
 		payloads
 
-#T124:
-#	$(MAKE) \
-#		SOC=T124 \
-#		ENTRY_ADDR=0x4000E000 \
-#		payloads
+T124_D:
+	$(MAKE) \
+		SOC=T124 \
+		UART=D \
+		ENTRY_ADDR=0x4000E000 \
+		payloads payloads_uart
 
 payloads: clean_objs \
 	make_folder \
