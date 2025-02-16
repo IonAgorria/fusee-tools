@@ -8,9 +8,8 @@
 #define BLOCK_SIZE (0x1000)
 
 #if defined(T20)
-	//TODO define these
-	#define write_ep1_in_sync (0 + 1)
-	#define usb_reset_ep1 (0 + 1)
+	#define write_ep1_in_sync (0xFFF03122 + 1)
+	#define usb_reset_ep1 (0xFFF031E8 + 1)
 #elif defined(T30)
 	#define write_ep1_in_sync (0xFFF05092 + 1)
 	#define usb_reset_ep1 (0xFFF04996 + 1)
@@ -20,6 +19,14 @@
 #else
 	#error No SoC specified
 #endif
+
+void usb_init() {
+#if defined(T20)
+	void (*usb_do_enumeration)(uint32_t*) = (void (*)(uint32_t*))(0xfff03050 + 1);
+	usb_do_enumeration((uint32_t*) 0x40001228);
+	msleep(500);
+#endif
+}
 
 void usb_transfer_data(void* data, uint32_t size) {
 	uint32_t ret = 0;

@@ -7,6 +7,7 @@
 void main() {
 	char str[] = "Hello, dumping fuses:\n";
 
+	usb_init();
 	usb_transfer_data(str, sizeof(str));
 
 	usb_transfer_data((void*)FUSE_BASE, SZ_1K);

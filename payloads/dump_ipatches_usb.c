@@ -9,6 +9,8 @@ void main()
 	char buf[4096];
 	//volatile uint32_t reg = 0;
 
+	usb_init();
+
 	//sprintf(buf, "hello there %d; 0x%08x; %s\n", 420, 0x69, "Nope");
 	//usb_transfer_data(buf, strlen(buf));
 
