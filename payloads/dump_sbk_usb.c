@@ -33,5 +33,5 @@ void main()
 
 	usb_transfer_data(buf, strlen(buf));
 
-	pmc_reset(0);
+	pmc_reset();
 }

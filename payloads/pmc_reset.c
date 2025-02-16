@@ -3,5 +3,5 @@
 
 void main()
 {
-	pmc_reset_rcm();
+	pmc_reset();
 }
