@@ -92,6 +92,8 @@ payloads: clean_objs \
 	make_folder \
 	idivmod.o \
 	pmc_reset.bin \
+	pmc_reset_rcm.bin \
+	pmc_reset_thumb.bin \
 	patch_irom.bin \
 	dump_fuse_usb.bin \
 	dump_ipatches_usb.bin \
@@ -100,7 +102,8 @@ payloads: clean_objs \
 	dump_sbk_usb.bin \
 	dump_sbk_iram.bin \
 	load_sbk_to_aes_engine.bin \
-	iram_loader.bin
+	iram_loader.bin \
+	usb_test.bin
 
 payloads_uart: clean_objs \
 	make_folder \
