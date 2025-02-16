@@ -4,8 +4,6 @@
 #include "strings.h"
 #include "bootrom_usb_helper.h"
 
-#define FUSE_PRIVATE_KEY0 (0x7000F9A4)
-
 uint32_t swap_endian(uint32_t input)
 {
 	uint8_t group[4];

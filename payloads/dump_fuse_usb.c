@@ -3,15 +3,6 @@
 #include "soc.h"
 #include "bootrom_usb_helper.h"
 
-// Tegra common
-#define IROM_START 0xfff00000U
-
-
-#define IPATCH_BASE 0x6001dc00U
-
-
-#define FUSE_BASE 0x7000f800U
-
 //void transfer_data(void *data, uint32_t size);
 
 void main() {
