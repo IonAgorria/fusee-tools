@@ -95,9 +95,13 @@ payloads: clean_objs \
 	patch_irom.bin \
 	dump_fuse_usb.bin \
 	dump_ipatches_usb.bin \
+	dump_irom_iram.bin \
 	dump_irom_usb.bin \
 	dump_irom_uart.bin \
-	dump_sbk_usb.bin
+	dump_sbk_usb.bin \
+	dump_sbk_iram.bin \
+	load_sbk_to_aes_engine.bin \
+	iram_loader.bin
 
 make_folder:
 	mkdir -p out/tmp/ out/$(SOC)
