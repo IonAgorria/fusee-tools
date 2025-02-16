@@ -34,7 +34,7 @@ T20:
 		SOC=T20 \
 		UART=B \
 		ENTRY_ADDR=0x40008000 \
-		payloads
+		payloads payloads_uart
 
 T30: T30_A T30_D T30_E
 
@@ -43,21 +43,21 @@ T30_A:
 		SOC=T30 \
 		UART=A \
 		ENTRY_ADDR=0x4000A000 \
-		payloads
+		payloads payloads_uart
 
 T30_D:
 	$(MAKE) \
 		SOC=T30 \
 		UART=D \
 		ENTRY_ADDR=0x4000A000 \
-		payloads
+		payloads payloads_uart
 
 T30_E:
 	$(MAKE) \
 		SOC=T30 \
 		UART=E \
 		ENTRY_ADDR=0x4000A000 \
-		payloads
+		payloads payloads_uart
 
 T114: T114_A T114_D
 
@@ -66,27 +66,27 @@ T114_A:
 		SOC=T114 \
 		UART=A \
 		ENTRY_ADDR=0x4000E000 \
-		payloads
+		payloads payloads_uart
 
 T114_D:
 	$(MAKE) \
 		SOC=T114 \
 		UART=D \
 		ENTRY_ADDR=0x4000E000 \
-		payloads
+		payloads payloads_uart
 
 T124:
 	$(MAKE) \
 		SOC=T124 \
 		ENTRY_ADDR=0x4000E000 \
-		payloads
+		payloads payloads_uart
 
 T124_D:
 	$(MAKE) \
 		SOC=T124 \
 		UART=D \
 		ENTRY_ADDR=0x4000E000 \
-		payloads
+		payloads payloads_uart
 
 payloads: clean_objs \
 	make_folder \
@@ -97,11 +97,15 @@ payloads: clean_objs \
 	dump_ipatches_usb.bin \
 	dump_irom_iram.bin \
 	dump_irom_usb.bin \
-	dump_irom_uart.bin \
 	dump_sbk_usb.bin \
 	dump_sbk_iram.bin \
 	load_sbk_to_aes_engine.bin \
 	iram_loader.bin
+
+payloads_uart: clean_objs \
+	make_folder \
+	idivmod.o \
+	dump_irom_uart.bin
 
 make_folder:
 	mkdir -p out/tmp/ out/$(SOC)
