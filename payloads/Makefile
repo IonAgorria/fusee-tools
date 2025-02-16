@@ -99,6 +99,10 @@ make_folder:
 	$(OBJCOPY) -v -O binary out/tmp/$(SOC)_$< out/$(SOC)/$@
 	rm out/tmp/$(SOC)_$<
 
+%_thumb.bin: %_thumb.elf
+	$(OBJCOPY) -v -O binary out/tmp/$(SOC)_$< out/$(SOC)/$@
+	rm out/tmp/$(SOC)_$<
+
 %_uart.bin: %_uart.elf
 	$(OBJCOPY) -v -O binary out/tmp/$(SOC)_$(UART)_$< out/$(SOC)/$(@:.bin=_$(UART).bin)
 	rm out/tmp/$(SOC)_$(UART)_$<
@@ -106,11 +110,17 @@ make_folder:
 %.elf: %.o
 	$(LD) $^ out/tmp/idivmod.o -T common.lds --defsym LOAD_ADDR=$(ENTRY_ADDR) $(LDFLAGS) -o out/tmp/$(SOC)_$@
 
+%_thumb.elf: %_thumb.o
+	$(LD) $^ -T common.lds --defsym LOAD_ADDR=$(ENTRY_ADDR) $(LDFLAGS) -o out/tmp/$(SOC)_$@
+
 %_uart.elf: %_uart.o
 	$(LD) $^ out/tmp/idivmod.o -T common.lds --defsym LOAD_ADDR=$(ENTRY_ADDR) $(LDFLAGS) -o out/tmp/$(SOC)_$(UART)_$@
 
 %.o: %.c
 	$(CC) $(CFLAGS) -D$(SOC) $< -c -o $@
+
+%_thumb.o: %.c
+	$(CC) $(CFLAGS) -mthumb -D$(SOC) $< -c -o $@
 
 %_uart.o: %_uart.c
 	$(CC) $(CFLAGS) -D$(SOC) -DUART_$(UART)_USE $< -c -o $@
