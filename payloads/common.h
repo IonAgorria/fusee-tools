@@ -23,8 +23,6 @@ __unused void payload_main() {
 #define APBDEV_PMC_SCRATCH41_0			(0x140)
 #define APBDEV_PMC_SCRATCH42_0			(0x144)
 
-#define BOOTROM_START			0xfff00000
-
 /*
 
 #define TEGRA_APB_MISC_BASE		0x70000000

@@ -9,7 +9,7 @@ void main()
 	
 	uart_print("Dumping IROM:\n\n");
 	
-	uart_dump_memory((uint8_t *)BOOTROM_START, IROM_SIZE);
+	uart_dump_memory((uint8_t *)BOOTROM_START, BOOTROM_SIZE);
 	
 	uart_print("\n\nFinished dumping IROM!\n");
 	uart_print_line();

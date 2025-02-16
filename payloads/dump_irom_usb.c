@@ -10,7 +10,7 @@ void dump_memory(uint8_t *src, uint32_t size);
 void main()
 {
 	reg_write(IPATCH_BASE, IPATCH_SELECT, 0x0);
-	usb_transfer_data((void*)BOOTROM_START, IROM_SIZE);
+	usb_transfer_data((void*)BOOTROM_START, BOOTROM_SIZE);
 
 	while(1);
 }
