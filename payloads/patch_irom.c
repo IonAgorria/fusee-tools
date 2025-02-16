@@ -1,28 +1,8 @@
 #include "common.h"
-
-#if defined(T20)
-    #define BOOTROM_START_POST_IPATCH	0x0
-    #define IROM_PATCH_ADDRESS		0x0
-#elif defined(T30)
-    #define BOOTROM_START_POST_IPATCH	0xfff01004
-    #define IROM_PATCH_ADDRESS		0xfff01cd4
-#elif defined(T114)
-    #define BOOTROM_START_POST_IPATCH	0xfff01008
-    #define IROM_PATCH_ADDRESS		0xfff022ac
-#else
-    #error No SoC specified
-#endif
+#include "soc.h"
 
 #define DESIRED_SECURITY_MODE		3
 #define IPATCH_SLOT			0 // maybe overwrite already present ipatches
-
-/* ipatch hardware */
-#define IPATCH_BASE			(0x6001dc00)
-#define IPATCH_SELECT			(0x0)
-#define IPATCH_REGS			(0x4)
-
-/* General next-stage image entry point type */
-typedef void (*entry_point)(void);
 
 /**
  * Patches over a given address in the IROM using the IPATCH hardware.
@@ -52,8 +32,6 @@ void ipatch_word(uint8_t slot, uint32_t addr, uint16_t new_value)
 
 void main()
 {
-	entry_point start;
-
 	/*
 	 * Patch the movs r0, #x instruction to always
 	 * return 3 (Developer Mode)
@@ -68,6 +46,5 @@ void main()
 	 */
 	reg_write(PMC_BASE, APBDEV_PMC_SCRATCH0_0, (1 << 1));
 
-	start = (entry_point)BOOTROM_START_POST_IPATCH;
-	start();
+	call_func(BOOTROM_START_POST_IPATCH);
 }
