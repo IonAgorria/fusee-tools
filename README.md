@@ -12,7 +12,7 @@ Open the terminal in the directory you want to contain fusee-tools and perform:
 ```
 git clone --recursive https://gitlab.com/grate-driver/fusee-tools.git
 cd fusee-tools/payloads
-make ARCH=arm CROSS_COMPILE=arm-none-eabi-
+make -j1 ARCH=arm CROSS_COMPILE=arm-none-eabi-
 ```
 
 ## Executing
