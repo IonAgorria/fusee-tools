@@ -23,11 +23,11 @@ void main()
 	for (uint32_t i = 0; i < BOOTROM_SIZE_T114; i++) {
 		send_byte(irom_base[i]);
 		
-		// give uart some time to synchronize in case timing is a bit of.
+		// give uart some time to synchronize in case timing is a bit off.
 		for (int i = 0; i < 216000000 / 216 / 55 * 4; i++) {;}
 	}
 	
-	// incdicate clear end of the bootrom
+	// indicate clear end of the bootrom
 	uint8_t counter = 0;
 	for (uint8_t i = 0; i < 256 ; i++){
 		send_byte(counter);
