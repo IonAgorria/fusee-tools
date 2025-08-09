@@ -8,7 +8,7 @@ void main() {
 
     usb_init();
 	for (int i = 0; i < 60; ++i) {
-		usb_transfer_data(str, sizeof(str));
+		usb_send(str, sizeof(str));
 		msleep(1000);
 	}
 

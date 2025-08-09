@@ -21,7 +21,7 @@ void main()
 
     usb_init();
     for (i = 0; i < 10; ++i) {
-	    usb_transfer_data(buf, strlen(buf));
+	    usb_send(buf, strlen(buf));
         msleep(100);
     }
 

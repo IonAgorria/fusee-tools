@@ -26,9 +26,9 @@ void main()
     }
 #ifdef USB
     usb_init();
-	usb_transfer_data(sbk, AES128_KEY_LENGTH);
+	usb_send(sbk, AES128_KEY_LENGTH);
 	for (int i = 0; i < 4; ++i) {
-		usb_transfer_data((void*) 0x6001b600 + (TEGRA_AES_HW_TABLE_LENGTH * i), TEGRA_AES_HW_TABLE_LENGTH);
+		usb_send((void*) 0x6001b600 + (TEGRA_AES_HW_TABLE_LENGTH * i), TEGRA_AES_HW_TABLE_LENGTH);
 	}
 #endif
 
@@ -42,7 +42,7 @@ void main()
 
 #ifdef USB
 	for (int i = 0; i < 4; ++i) {
-		usb_transfer_data((void*) 0x6001b600 + (TEGRA_AES_HW_TABLE_LENGTH * i), TEGRA_AES_HW_TABLE_LENGTH);
+		usb_send((void*) 0x6001b600 + (TEGRA_AES_HW_TABLE_LENGTH * i), TEGRA_AES_HW_TABLE_LENGTH);
 	}
 #endif
     
